@@ -8,7 +8,7 @@
 body {
   font-family: 'Lato', sans-serif;
   color: #4c4c4c;
-  background: #f8fdf3;
+  background: #99ddff;
 }
 h1,
 p,
@@ -69,8 +69,8 @@ button {
 }
 header {
   text-align: center;
-  background: linear-gradient(90deg, #d4eece, #55b3d0, #1e7eb7),
-              url('../images/header-bg.jpg') no-repeat;
+  background: linear-gradient(90deg, #d4eece, #55b3d0, #d4eece),
+              url('../images/header.jpg') no-repeat;
               background-blend-mode: multiply;    
               background-size: cover;   
 }
