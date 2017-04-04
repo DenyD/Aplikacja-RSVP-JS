@@ -2,7 +2,6 @@ const form = document.getElementById('registrar');
 const input = form.querySelector('input');
 const mainDiv = document.querySelector('.main');
 const ul = document.getElementById('invitedList');
-
 const div = document.createElement('div');
 const filterLabel = document.createElement('label');
 const filterCheckBox = document.createElement('input');
@@ -32,24 +31,26 @@ filterCheckBox.addEventListener('change', (e) => {
 });
 
 function createLI(text) {
+    function createElement(elementName, property, value) {
+        const element = document.createElement(elementName);
+        element[property] = value;
+        return element;
+    }
+    function appendToLI(elementName, property, value) {
+        const element = createElement(elementName, property, value);
+        li.appendChild(element);
+        return element;
+    }
+
     const li = document.createElement('li');
-    const span = document.createElement('span');
-    span.textContent = text;
-    li.appendChild(span);
-    const label = document.createElement('label');
-    label.textContent = 'Confirmed';
-    const checkbox = document.createElement('input');
-    checkbox.type = 'checkbox';
-    label.appendChild(checkbox);
-    li.appendChild(label)
-    const editButton = document.createElement('button');
-    editButton.textContent = 'Edit';
-    li.appendChild(editButton);
-    const removeButton = document.createElement('button');
-    removeButton.textContent = 'Remove';
-    li.appendChild(removeButton);
+    appendToLI('span', 'textContent', text);
+    appendToLI('label', 'textContent', 'Confirmed')
+        .appendChild(createElement('input', 'type', 'checkbox'));    
+    appendToLI('button', 'textContent', 'Edit');
+    appendToLI('button', 'textContent', 'Remove');
     return li;
 }
+
 form.addEventListener('submit', (e) => {
     e.preventDefault();
     const text = input.value;
@@ -75,23 +76,31 @@ ul.addEventListener('click', (e) => {
         const button = e.target;
         const li = button.parentNode;
         const ul = li.parentNode;
-        if (button.textContent === 'Remove') {
-            ul.removeChild(li);
-        } else if (button.textContent === 'Edit') {
-            const span = li.firstElementChild;
-            const input = document.createElement('input');
-            input.type = 'text';
-            input.value = span.textContent;
-            li.insertBefore(input, span);
-            li.removeChild(span);
-            button.textContent = 'Save';
-        } else if (button.textContent === 'Save') {
-            const input = li.firstElementChild;
-            const span = document.createElement('span');
-            span.textContent = input.value;
-            li.insertBefore(span, input);
-            li.removeChild(input);
-            button.textContent = 'Edit';
-        }
+        const action = button.textContent;
+        const nameActions = {
+            Remove: () => {
+                ul.removeChild(li)
+            },
+            Edit: () => {
+                const span = li.firstElementChild;
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.value = span.textContent;
+                li.insertBefore(input, span);
+                li.removeChild(span);
+                button.textContent = 'Save';
+            },
+            Save: () => {
+                const input = li.firstElementChild;
+                const span = document.createElement('span');
+                span.textContent = input.value;
+                li.insertBefore(span, input);
+                li.removeChild(input);
+                button.textContent = 'Edit';
+            }  
+        };
+        // select and run action in buttons name
+        nameActions[action]();
+        
     }
 });
